@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AURA NETWORK TEST</title>
+</head>
+<body style="background:#000;color:#0f0;font-family:monospace;padding:20px;font-size:13px">
+  <h1>NETWORK TEST</h1>
+  <p>Testing if your phone can download Next.js resources...</p>
+  <div id="results" style="margin-top:20px"></div>
+  <script>
+    var results = document.getElementById('results');
+    function log(msg, color) {
+      var p = document.createElement('p');
+      p.style.color = color || '#0f0';
+      p.style.padding = '4px 0';
+      p.style.borderBottom = '1px solid #030';
+      p.textContent = msg;
+      results.appendChild(p);
+    }
+
+    // Test 1: Fetch the debug page HTML and check what scripts it references
+    log('Fetching /debug page HTML...');
+    fetch('/debug')
+      .then(function(res) { return res.text(); })
+      .then(function(html) {
+        log('HTML received: ' + html.length + ' bytes', '#0f0');
+        
+        // Find all script src references
+        var scriptMatches = html.match(/src="([^"]*\/_next[^"]*)"/g) || [];
+        log('Found ' + scriptMatches.length + ' Next.js script tags', '#ff0');
+        
+        // Try to fetch each script
+        scriptMatches.forEach(function(match, i) {
+          var src = match.replace('src="', '').replace('"', '');
+          log('Trying to load: ' + src.substring(0, 80) + '...');
+          
+          fetch(src)
+            .then(function(res) {
+              if (res.ok) {
+                return res.text().then(function(text) {
+                  log('  ✓ Script ' + i + ': OK (' + text.length + ' bytes)', '#0f0');
+                });
+              } else {
+                log('  ✗ Script ' + i + ': HTTP ' + res.status, '#f00');
+              }
+            })
+            .catch(function(err) {
+              log('  ✗ Script ' + i + ': FAILED - ' + err.message, '#f00');
+            });
+        });
+      })
+      .catch(function(err) {
+        log('Failed to fetch /debug: ' + err.message, '#f00');
+      });
+
+    // Test 2: Check WebSocket connectivity (HMR)
+    log('Testing WebSocket (HMR)...');
+    try {
+      var ws = new WebSocket('ws://' + location.host + '/_next/webpack-hmr');
+      ws.onopen = function() { log('WebSocket: CONNECTED', '#0f0'); ws.close(); };
+      ws.onerror = function() { log('WebSocket: FAILED', '#f00'); };
+      setTimeout(function() {
+        if (ws.readyState !== 1 && ws.readyState !== 3) {
+          log('WebSocket: TIMEOUT (not connected after 5s)', '#ff0');
+        }
+      }, 5000);
+    } catch(e) {
+      log('WebSocket: ERROR - ' + e.message, '#f00');
+    }
+
+    // Test 3: Try Turbopack HMR
+    try {
+      var ws2 = new WebSocket('ws://' + location.host + '/__turbopack_hmr__');
+      ws2.onopen = function() { log('Turbopack WS: CONNECTED', '#0f0'); ws2.close(); };
+      ws2.onerror = function() { log('Turbopack WS: FAILED', '#ff0'); };
+    } catch(e) {
+      log('Turbopack WS: ERROR - ' + e.message, '#ff0');
+    }
+  </script>
+</body>
+</html>

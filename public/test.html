@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AURA RAW TEST</title>
+</head>
+<body style="background:#000;color:#0f0;font-family:monospace;padding:20px">
+  <h1>RAW HTML TEST</h1>
+  <p id="js-status" style="color:red;font-size:20px">JavaScript is NOT working</p>
+  <button id="btn" style="padding:15px 30px;font-size:20px;background:#0f0;color:#000;border:none;margin:20px 0">
+    TAP ME: 0
+  </button>
+  <div id="info" style="margin-top:20px"></div>
+  <script>
+    // If this runs, JS works
+    document.getElementById('js-status').textContent = 'JavaScript IS working!';
+    document.getElementById('js-status').style.color = '#0f0';
+    
+    var count = 0;
+    document.getElementById('btn').addEventListener('click', function() {
+      count++;
+      this.textContent = 'TAP ME: ' + count;
+    });
+
+    var info = document.getElementById('info');
+    info.innerHTML = '<p>Screen: ' + screen.width + 'x' + screen.height + '</p>'
+      + '<p>Window: ' + window.innerWidth + 'x' + window.innerHeight + '</p>'
+      + '<p>UserAgent: ' + navigator.userAgent + '</p>'
+      + '<p>Viewport meta: ' + (document.querySelector('meta[name=viewport]') ? document.querySelector('meta[name=viewport]').getAttribute('content') : 'MISSING') + '</p>';
+  </script>
+</body>
+</html>
