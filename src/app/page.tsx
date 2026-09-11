@@ -96,7 +96,7 @@ export default function LandingPage() {
           
           <div style={{ marginTop: 48, display: 'flex', gap: 16, justifyContent: 'center' }}>
             <Link href="/terminal" style={{ textDecoration: 'none' }}>
-              <button style={{
+               <button style={{
                 background: '#00e676', color: '#000', border: 'none', cursor: 'pointer',
                 padding: '16px 32px', fontSize: 13, fontWeight: 800, letterSpacing: '0.15em',
                 boxShadow: '0 0 20px rgba(0, 230, 118, 0.4)'
@@ -104,6 +104,34 @@ export default function LandingPage() {
                 INITIALIZE TERMINAL
               </button>
             </Link>
+          </div>
+          
+          {/* TERMINAL MOCKUP WINDOW */}
+          <div style={{
+            marginTop: 80,
+            width: '100%',
+            maxWidth: 1000,
+            marginInline: 'auto',
+            background: '#050505',
+            border: '1px solid #222',
+            borderRadius: 8,
+            overflow: 'hidden',
+            boxShadow: '0 20px 50px rgba(0,0,0,0.8)',
+            transform: 'perspective(1000px) rotateX(2deg)',
+            transformOrigin: 'top center',
+          }}>
+            <div style={{ height: 24, background: '#111', borderBottom: '1px solid #222', display: 'flex', alignItems: 'center', padding: '0 12px', gap: 6 }}>
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#ff5f56' }} />
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#ffbd2e' }} />
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#27c93f' }} />
+              <span style={{ fontSize: 10, color: '#555', letterSpacing: '0.1em', marginLeft: 'auto' }}>AURA_TERMINAL_V1.0</span>
+            </div>
+            <div style={{ height: 400, background: 'linear-gradient(180deg, #0a0a0a 0%, #000 100%)', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '60%', background: 'linear-gradient(0deg, rgba(0,230,118,0.05) 0%, transparent 100%)' }} />
+              <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', color: '#333', fontSize: 14, letterSpacing: '0.5em', fontWeight: 800 }}>
+                 SYSTEM ONLINE
+              </div>
+            </div>
           </div>
         </div>
       </section>
