@@ -1,6 +1,9 @@
 import { NextRequest } from 'next/server';
 import Groq from 'groq-sdk';
 
+export const dynamic = 'force-dynamic';
+export const maxDuration = 30;
+
 const tools: Groq.Chat.Completions.ChatCompletionTool[] = [
   {
     type: 'function',
@@ -162,7 +165,7 @@ ${context || 'No specific ticker context provided.'}
     // Initial tool-call attempt without streaming to process functions cleanly
     const initialResponse = await groq.chat.completions.create({
       messages: groqMessages as any,
-      model: 'openai/gpt-oss-120b',
+      model: 'openai/gpt-oss-20b',
       tools: tools,
       tool_choice: 'auto',
     });
@@ -188,7 +191,7 @@ ${context || 'No specific ticker context provided.'}
     // Second stream with the resolved tools
     const stream = await groq.chat.completions.create({
       messages: groqMessages as any,
-      model: 'openai/gpt-oss-120b',
+      model: 'openai/gpt-oss-20b',
       stream: true,
     });
 
