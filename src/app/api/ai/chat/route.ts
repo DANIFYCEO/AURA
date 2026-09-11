@@ -162,7 +162,7 @@ ${context || 'No specific ticker context provided.'}
     // Initial tool-call attempt without streaming to process functions cleanly
     const initialResponse = await groq.chat.completions.create({
       messages: groqMessages as any,
-      model: 'llama-3.1-70b-versatile',
+      model: 'openai/gpt-oss-120b',
       tools: tools,
       tool_choice: 'auto',
     });
@@ -188,7 +188,7 @@ ${context || 'No specific ticker context provided.'}
     // Second stream with the resolved tools
     const stream = await groq.chat.completions.create({
       messages: groqMessages as any,
-      model: 'llama-3.1-70b-versatile',
+      model: 'openai/gpt-oss-120b',
       stream: true,
     });
 
