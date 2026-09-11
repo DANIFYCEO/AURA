@@ -144,7 +144,8 @@ ${context || 'No specific ticker context provided.'}
   }
 
   if (!apiKey) {
-    return Response.json({ error: "No GROQ_API_KEY configured." }, { status: 500 });
+    const keys = Object.keys(process.env).filter(k => k.includes('GROQ') || k.includes('KEY'));
+    return Response.json({ error: `No GROQ_API_KEY configured. (Vercel sees these key-like variables: ${keys.join(', ')})` }, { status: 500 });
   }
 
   try {
