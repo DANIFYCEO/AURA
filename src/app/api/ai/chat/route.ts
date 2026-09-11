@@ -162,7 +162,7 @@ ${context || 'No specific ticker context provided.'}
     // Initial tool-call attempt without streaming to process functions cleanly
     const initialResponse = await groq.chat.completions.create({
       messages: groqMessages as any,
-      model: 'llama-3.3-70b-versatile',
+      model: 'llama3-70b-8192',
       tools: tools,
       tool_choice: 'auto',
     });
@@ -188,7 +188,7 @@ ${context || 'No specific ticker context provided.'}
     // Second stream with the resolved tools
     const stream = await groq.chat.completions.create({
       messages: groqMessages as any,
-      model: 'llama-3.3-70b-versatile',
+      model: 'llama3-70b-8192',
       stream: true,
     });
 
@@ -230,6 +230,6 @@ ${context || 'No specific ticker context provided.'}
 
   } catch (err: any) {
     console.error('Groq chat error:', err);
-    return Response.json({ error: 'AI unavailable', details: String(err) }, { status: 500 });
+    return Response.json({ error: `AI Error: ${String(err.message || err)}` }, { status: 500 });
   }
 }
